@@ -1,0 +1,76 @@
+import dependencies.AnnotationProcessing
+import dependencies.Versions
+import dependencies.ApplicationDepencies
+import dependencies.Dependencies
+import dependencies.JavaDependencies
+import dependencies.AndroidTestDependencies
+import dependencies.SupportDependencies
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdkVersion Versions.compilesdk
+    defaultConfig {
+        applicationId ApplicationDepencies.id
+        minSdkVersion Versions.minsdk
+        targetSdkVersion Versions.targetsdk
+        versionCode ApplicationDepencies.version_code
+        versionName ApplicationDepencies.version_name
+
+        testInstrumentationRunner AndroidTestDependencies.test_runner
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaDependencies.java_version
+        targetCompatibility = JavaDependencies.java_version
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaDependencies.java_version
+    }
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Kotlin
+    implementation(Dependencies.kotlin_standard_library)
+    implementation(Dependencies.kotlin_reflect)
+    implementation(Dependencies.ktx)
+
+    // dependencies
+    implementation(Dependencies.dagger_hilt)
+    implementation(Dependencies.firebase_firestore)
+    implementation(Dependencies.firebase_analytics)
+    implementation(Dependencies.firebase_auth)
+    implementation(Dependencies.firebase_crashlytics)
+
+    // Support
+    implementation(SupportDependencies.appcompat)
+    implementation(SupportDependencies.constraintlayout)
+    implementation(SupportDependencies.material_design)
+    implementation(SupportDependencies.swipe_refresh_layout)
+    implementation(Dependencies.kotlin_coroutines)
+    implementation(Dependencies.kotlin_coroutines_android)
+    implementation(Dependencies.kotlin_coroutines_play_services)
+
+    // Annotation processing
+//    kapt(AnnotationProcessing.hilt_compiler)
+    kapt(AnnotationProcessing.hilt_android_compiler)
+
+}
